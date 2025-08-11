@@ -3,25 +3,95 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Date</title>
-    <link rel="stylesheet" href="css/Styles.css" />
-    <script src="js/Script.js" defer></script>
+    <title>Todo List</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+      integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="js/script.js" defer></script>
   </head>
   <body>
-    <div id="main">
-      <h4>Dias Úteis</h1>
-      <div id="prazo">
-        <label for="dias">Prazo:</label>
-        <input type="text" id="dias" />
+    <div class="todo-container">
+      <header>
+        <h1>To-do List</h1>
+      </header>
+      <form id="todo-form">
+        <p>Adicione sua tarefa:</p>
+        <div class="form-control">
+          <label for="todo-titulo">Título:</label>
+          <input
+            type="text"
+            id="todo-titulo"
+            placeholder="Digite o nome do título"
+          />
+        </div>
+        <div class="form-control">
+          <label for="todo-date">Data:</label>
+          <input type="date" id="todo-date" />
+        </div>
+        <div class="form-control">
+          <label for="todo-prazo">Prazo:</label>
+          <input
+            type="text"
+            id="todo-prazo"
+            placeholder="Qual o prazo de entrega (dias úteis)"
+          />
+        </div>
+        <button type="submit">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </form>
+      <form id="edit-form" class="hide">
+        <p>Edite a sua tarefa:</p>
+        <div class="form-control">
+          <label for="edit-titulo">Título:</label>
+          <input
+            type="text"
+            id="edit-titulo"
+            placeholder="Edite o título da sua tarefa"
+          />
+        </div>
+        <div class="form-control">
+          <label for="edit-date">Data:</label>
+          <input type="date" id="edit-date" />
+        </div>
+        <div class="form-control">
+          <label for="edit-prazo">Prazo:</label>
+          <input
+            type="text"
+            id="edit-prazo"
+            placeholder="Edite o prazo da sua tarefa"
+          />
+        </div>
+        <button type="submit">
+          <i class="fa-solid fa-check-double"></i>
+        </button>
+        <button id="cancel-edit-btn">Cancelar</button>
+      </form>
+      <div id="toolbar">
+        <div id="search">
+          <h4>Pesquisar:</h4>
+          <form>
+            <input type="text" id="search-input" placeholder="Buscar" />
+            <button id="erase-button">
+              <i class="fa-solid fa-delete-left"></i>
+            </button>
+          </form>
+        </div>
+        <div id="filter">
+          <h4>Filtrar:</h4>
+          <select id="filter-select">
+            <option value="all">Todos</option>
+            <option value="done">Feitos</option>
+            <option value="todo">A fazer</option>
+          </select>
+        </div>
       </div>
-      <div id="calendario">
-        <label for="data">Data:</label>
-        <input type="date" id="data" />
-      </div>
-      <button id="btn">Calcular</button>
-      <div id="result" >
-        <p id="show"></p>
-      </div>
+      <div id="todo-list"></div>
     </div>
   </body>
 </html>

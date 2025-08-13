@@ -13,6 +13,8 @@ const searchInput = document.querySelector("#search-input")
 const eraseBtn = document.querySelector("#erase-button")
 const filterBtn = document.querySelector("#filter-select")
 
+const btnBaixarinput = document.querySelector("#btn-baixar")
+
 let oldTituloInputValue
 let oldDateInputValue
 
@@ -251,8 +253,7 @@ const saveTodoLocalStorage = (todo) => {
 
 const getTodosLocalStorage = () => {
     const todos = JSON.parse(localStorage.getItem("todos")) || []
-
-    return todos
+    return todos.sort((a, b) => a.done > b.done ? -1 : 1)
 }
 
 const loadTodos = () => {
@@ -326,7 +327,8 @@ function diaMeses(mes) {
         return 31
     }
     if (mes === 2) {
-        return 28
+        const bissexto = (ano % 4 === 0 && ano % 100 !== 0) || (ano % 400 === 0)
+        return bissexto ? 29 : 28
     }
     if (mes === 3) {
         return 31
@@ -407,4 +409,30 @@ function diasUteis(d, prazo1) {
         mes = 1
     }
 }
+
+
+// dowload
+const exportData = () => {
+    const todos = getTodosLocalStorage()
+
+    const csvString = [
+        ["Titulo", "Data Inicio", "Data final"],
+        ...todos.map((todo) => [todo.text, todo.date, todo.dateEnd])
+    ].map((e) => e.join(",")).join("\n")
+
+    const element = document.createElement("a")
+
+    element.href = "data:text/csv;charset=utf-8," + encodeURI(csvString)
+
+    element.target = "_blank"
+
+    element.download = "todos.csv"
+
+    element.click()
+}
+
+btnBaixarinput.addEventListener("click", () => {
+    exportData()
+})
+
 loadTodos()

@@ -302,7 +302,8 @@ const updateTodoLocalStorage = (todoOldText, todoNewText, todoOldDate, todoNewDa
 // feriados
 const feriadosFixos = [
     "01-01", // Ano Novo
-    "04-21", // Tiradentes
+    "04-18", //sexta feira santa
+    "04-21", // Tiradentes  
     "05-01", // Dia do Trabalho
     "06-19", //Corpus Christi
     "09-07", //Independência do Brasil
@@ -314,9 +315,6 @@ const feriadosFixos = [
     "11-15", // Proclamação da República
     "11-20", //Consciência Negra
     "12-25", // Natal
-    "07-26", // Fundação do Estado de Goiás (estadual)
-    "06-07", // Aniversário de Anicuns
-    "10-04"  // São Francisco de Assis (padroeiro)
 ];
 
 

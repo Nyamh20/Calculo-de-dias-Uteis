@@ -21,6 +21,8 @@ let oldDateInputValue
 let prazo
 let mes;
 let dia;
+let dateFormated;
+let dateEndFormated;
 
 // funcoes
 const saveTodo = (text, date, prazo, done = 0, save = 1) => {
@@ -39,11 +41,13 @@ const saveTodo = (text, date, prazo, done = 0, save = 1) => {
     todoDateStartSpan.classList.add("todoDateStart")
 
     dateEnd = diasUteis(date, prazo)
+    dateFormated = formatDate(date)
+    dateEndFormated = formatDate(dateEnd)
 
-    todoDateStartSpan.innerText = date
+    todoDateStartSpan.innerText = dateFormated
     todoDateStart.innerText = "Data início: "
     todoDateStart.appendChild(todoDateStartSpan)
-    todoDate.innerText = dateEnd
+    todoDate.innerText = dateEndFormated
     todoTitle.innerText = text
     todoP.innerText = `Vencimento: `
     todoP.appendChild(todoDate)
@@ -84,6 +88,12 @@ const saveTodo = (text, date, prazo, done = 0, save = 1) => {
     todoTituloInput.focus()
 }
 
+const formatDate = (date) => {
+    const d = date.split("-")
+    console.log(d)
+    return `${d[2]}-${d[1]}-${d[0]}`
+}
+
 const toggleForms = () => {
     editForm.classList.toggle("hide")
     todoForm.classList.toggle("hide")
@@ -97,6 +107,8 @@ const updateTodo = (text, date, prazo) => {
         let todoTitle = todo.querySelector("h3")
         let todoDate = todo.querySelector(".todoDateStart")
         let todoDateEnd = todo.querySelector(".todoDateEnd")
+        todoDate.innerText = formatDate(todoDate.innerText)
+        todoDateEnd.innerText = formatDate(todoDateEnd.innerText)
         if (todoTitle.innerText === oldTituloInputValue || todoDate.innerText === oldDateInputValue) {
             todoTitle.innerText = text
             todoDateEnd.innerText = diasUteis(date, prazo)
@@ -170,7 +182,8 @@ document.addEventListener("click", (e) => {
 
     if (parentEl && parentEl.querySelector("h3")) {
         todoTitle = parentEl.querySelector("h3").innerText || ""
-        todoDate = parentEl.querySelector(".todoDateStart").innerText || ""
+        todoDate = formatDate(parentEl.querySelector(".todoDateStart").innerText) || ""
+        console.log(todoDate)
     }
 
     if (targetEl.classList.contains("finish-todo")) {

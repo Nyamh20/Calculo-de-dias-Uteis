@@ -397,7 +397,7 @@ function diasUteis(d, prazo1) {
                     prazo--
                 }
                 if (prazo >= prazo1) {
-                    return `${String(dia).padStart(2, "0")}-${String(mes).padStart(2, "0")}-${String(ano)}`
+                    return `${String(dia).padStart(2, "0")}/${String(mes).padStart(2, "0")}/${String(ano)}`
                 }
                 prazo++
             }

@@ -21,8 +21,6 @@ let oldDateInputValue
 let prazo
 let mes;
 let dia;
-let dateFormated;
-let dateEndFormated;
 
 // funcoes
 const saveTodo = (text, date, prazo, done = 0, save = 1) => {
@@ -41,13 +39,11 @@ const saveTodo = (text, date, prazo, done = 0, save = 1) => {
     todoDateStartSpan.classList.add("todoDateStart")
 
     dateEnd = diasUteis(date, prazo)
-    dateFormated = formatDate(date)
-    dateEndFormated = formatDate(dateEnd)
 
-    todoDateStartSpan.innerText = dateFormated
+    todoDateStartSpan.innerText = date
     todoDateStart.innerText = "Data início: "
     todoDateStart.appendChild(todoDateStartSpan)
-    todoDate.innerText = dateEndFormated
+    todoDate.innerText = dateEnd
     todoTitle.innerText = text
     todoP.innerText = `Vencimento: `
     todoP.appendChild(todoDate)
@@ -90,8 +86,7 @@ const saveTodo = (text, date, prazo, done = 0, save = 1) => {
 
 const formatDate = (date) => {
     const d = date.split("-")
-    console.log(d)
-    return `${d[2]}-${d[1]}-${d[0]}`
+    return `${d[2].padStart(2, "0")}/${d[1].padStart(2, "0")}/${d[0]}`
 }
 
 const toggleForms = () => {
@@ -107,8 +102,8 @@ const updateTodo = (text, date, prazo) => {
         let todoTitle = todo.querySelector("h3")
         let todoDate = todo.querySelector(".todoDateStart")
         let todoDateEnd = todo.querySelector(".todoDateEnd")
-        todoDate.innerText = formatDate(todoDate.innerText)
-        todoDateEnd.innerText = formatDate(todoDateEnd.innerText)
+        todoDate.innerText = todoDate.innerText
+        todoDateEnd.innerText = todoDateEnd.innerText
         if (todoTitle.innerText === oldTituloInputValue || todoDate.innerText === oldDateInputValue) {
             todoTitle.innerText = text
             todoDateEnd.innerText = diasUteis(date, prazo)
@@ -166,7 +161,7 @@ todoForm.addEventListener("submit", (e) => {
     e.preventDefault()
 
     const tituloInputValue = todoTituloInput.value
-    const dateInputValue = todoDateInput.value
+    const dateInputValue = formatDate(todoDateInput.value).padStart(2, "0")
     const prazoInputValue = todoPrazoInput.value
 
     if (tituloInputValue && dateInputValue) {
@@ -182,8 +177,7 @@ document.addEventListener("click", (e) => {
 
     if (parentEl && parentEl.querySelector("h3")) {
         todoTitle = parentEl.querySelector("h3").innerText || ""
-        todoDate = formatDate(parentEl.querySelector(".todoDateStart").innerText) || ""
-        console.log(todoDate)
+        todoDate = parentEl.querySelector(".todoDateStart").innerText || ""
     }
 
     if (targetEl.classList.contains("finish-todo")) {
@@ -200,9 +194,11 @@ document.addEventListener("click", (e) => {
     if (targetEl.classList.contains("edit-todo")) {
         toggleForms()
 
+        let [dia, mes, ano] = todoDate.split("/")
+
         editTituloInput.value = todoTitle
         oldTituloInputValue = todoTitle
-        editDateInput.value = todoDate
+        editDateInput.value = `${ano}-${mes.padStart(2, "0")}-${dia.padStart(2, "0")}`
         oldDateInputValue = todoDate
         const todos = getTodosLocalStorage()
         todos.forEach((todo) => {
@@ -223,10 +219,10 @@ editForm.addEventListener("submit", (e) => {
     e.preventDefault()
 
     const editTituloInputValue = editTituloInput.value
-    const editDateInputValue = editDateInput.value
+    const editDateInputValue = formatDate(editDateInput.value)
     const editPrazoInputValue = editPrazoInput.value
 
-    if (editTituloInputValue || editDateInputValue) {
+    if (editTituloInputValue || editDateInputValue || editPrazoInputValue) {
         updateTodo(editTituloInputValue, editDateInputValue, editPrazoInputValue)
     }
 
@@ -386,30 +382,22 @@ function eFinalDeSemana(data) {
     return diaSemana === 0 || diaSemana === 6
 }
 
-function recessoFeriado(data) {
-    const recesso = data.getDay()
-    return recesso === 2 || recesso === 4
-}
-
 function diasUteis(d, prazo1) {
-    const data = d.split("-")
+    const data = d.split("/")
     prazo = -1
-    ano = Number(data[0])
+    ano = Number(data[2])
     mes = Number(data[1])
-    dia = Number(data[2])
+    dia = Number(data[0])
     while (true) {
         while (mes < 13) {
             while (dia < diaMeses(mes)) {
                 dia++
 
                 if (eFinalDeSemana(new Date(ano, mes - 1, dia)) || eFeriado(mes, dia)) {
-                    if (!(eFinalDeSemana(new Date(ano, mes - 1, dia))) && recessoFeriado(new Date(ano, mes - 1, dia))) {
-                        prazo--
-                    }
                     prazo--
                 }
                 if (prazo >= prazo1) {
-                    return `${ano}-${mes}-${dia}`
+                    return `${String(dia).padStart(2, "0")}-${String(mes).padStart(2, "0")}-${String(ano)}`
                 }
                 prazo++
             }
